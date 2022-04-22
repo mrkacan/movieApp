@@ -1,28 +1,29 @@
 import * as types from './types';
 
-const initialState: types.GiftState = {
+const initialState: types.MoviesState = {
     data: [],
-    offset: 0,
     isLoading: false,
     error: ''
 };
 
-const reducer = (state = initialState, action: types.GifsActionTypes) => {
+const reducer = (state = initialState, action: types.MoviesActionTypes) => {
     switch (action.type) {
-    case types.GET_GIFS: {
+    case types.GET_MOVIES: {
         return {
+            ...state,
             isLoading: true
         };
     }
-    case types.GET_GIFS_SUCCESS: {
+    case types.GET_MOVIES_SUCCESS: {
         return {
+            ...state,
             isLoading: false,
             data: action.payload.data,
-            offset: action.payload.offset
         };
     }
-    case types.GET_GIFS_FAILURE: {
+    case types.GET_MOVIES_FAILURE: {
         return {
+            ...state,
             isLoading: false,
             error: action.payload.error
         };

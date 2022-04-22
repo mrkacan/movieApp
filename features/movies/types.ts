@@ -1,45 +1,56 @@
 import {Action} from 'redux';
 
-const GET_GIFS = 'GET_GIFS';
-const GET_GIFS_SUCCESS =  'GET_GIFS_SUCCESS';
-const GET_GIFS_FAILURE = 'GET_GIFS_FAILURE';
+const GET_MOVIES = 'GET_MOVIES';
+const GET_MOVIES_SUCCESS =  'GET_MOVIES_SUCCESS';
+const GET_MOVIES_FAILURE = 'GET_MOVIES_FAILURE';
 
-interface GetGifsAction extends Action {
-    type: typeof GET_GIFS;
+interface GetMoviesAction extends Action {
+    type: typeof GET_MOVIES;
+    payload: string
+}
+
+interface GetMoviesSuccessAction extends Action {
+    type: typeof GET_MOVIES_SUCCESS;
+    payload: {
+        data: MovieItem[];
+    };
+}
+
+interface GetMoviesErrorAction extends Action {
+    type: typeof GET_MOVIES_FAILURE;
     payload: {
         error: string;
     };
 }
 
-interface GetGifsSuccessAction extends Action {
-    type: typeof GET_GIFS_SUCCESS;
-    payload: {
-        data: string[];
-        offset: number;
-    };
-}
+export type MoviesActionTypes =
+    | GetMoviesAction
+    | GetMoviesSuccessAction
+    | GetMoviesErrorAction
 
-interface GetGifsErrorAction extends Action {
-    type: typeof GET_GIFS_FAILURE;
-    payload: {
-        error: string;
-    };
-}
-
-export type GifsActionTypes =
-    | GetGifsAction
-    | GetGifsSuccessAction
-    | GetGifsErrorAction
-
-export type GiftState = {
-    data: Array;
-    offset: number;
+export type MoviesState = {
+    data: MovieItem[];
     isLoading: boolean;
     error: string;
 }
 
+export interface MovieItem {
+    Poster: string;
+    Title: string;
+    Type: string;
+    Year: string;
+    imdbID: string;
+    imdbRating: string;
+}
+
+export type MoviesAPIResponse = {
+    Response: "True" | "False";
+    Search: MovieItem[];
+    totalResults: string
+}
+
 export {
-    GET_GIFS,
-    GET_GIFS_SUCCESS,
-    GET_GIFS_FAILURE,
+    GET_MOVIES,
+    GET_MOVIES_SUCCESS,
+    GET_MOVIES_FAILURE,
 };

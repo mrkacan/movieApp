@@ -1,8 +1,8 @@
 import { addOrRemove } from '../../utils';
 import * as types from './types';
-import {FavoritesState} from "./types";
+import {UserDataState} from "./types";
 
-const initialState: types.FavoritesState = {
+const initialState: types.UserDataState = {
     favoriteItems: [],
     hiddenItems: []
 };
@@ -18,9 +18,11 @@ const reducer = (state = initialState, action: types.MoviesActionTypes) => {
         };
     }
     case types.FAVORITE_TOGGLE: {
+        const newUserDataItems = addOrRemove(state.favoriteItems, action.payload);
+
         return {
-            isLoading: false,
-            data: action.payload
+            ...state,
+            favoriteItems: newUserDataItems
         };
     }
     default:

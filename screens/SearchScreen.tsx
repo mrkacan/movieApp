@@ -1,31 +1,65 @@
-import { StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {Button, Keyboard, SafeAreaView, StyleSheet, TextInput, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import * as moviesAction from '../features/movies/actions';
+import ListView from "../components/ListView";
+import {getMoviesSelector} from "../features/movies/selectors";
 
 export default function SearchScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/SearchScreen.tsx" />
-    </View>
-  );
+    const dispatch = useDispatch();
+    const {data, isLoading} = useSelector(getMoviesSelector);
+    const state = useSelector((state) => state);
+    const [searchText, setSearchText] = useState('');
+
+
+    const getMovies = () => {
+        if (searchText) {
+            dispatch(moviesAction.getMovies(searchText));
+            Keyboard.dismiss()
+        }
+    }
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.searchInputWrapper}>
+                <TextInput
+                    placeholder={'Start typing something'}
+                    style={styles.textInput}
+                    value={searchText}
+                    onChangeText={setSearchText}
+                    returnKeyType='search'
+                    onSubmitEditing={getMovies}
+                    autoFocus={true}
+                />
+                <View><Button title={"Search"} onPress={getMovies} color={"#105067"} /></View>
+            </View>
+
+            <ListView data={data}/>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
+    container: {
+        flex: 1,
+        margin: 10,
+    },
+    textInput: {
+        fontSize: 15
+    },
+    searchInputWrapper: {
+        width: '100%',
+        position: "relative",
+        height: 50,
+        paddingHorizontal: 10,
+        borderWidth: 1,
+        borderColor: '#105067',
+        flexDirection: "row",
+        alignItems:"center",
+        justifyContent:"space-between"
+    },
+    flatListContent: {
+        marginTop: 20,
+    }
 });

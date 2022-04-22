@@ -19,7 +19,7 @@ export type MoviesActionTypes =
     | ToggleFavoriteAction
     | ToggleHideAction
 
-export type FavoritesState = {
+export type UserDataState = {
     favoriteItems: MovieItem[],
     hiddenItems: MovieItem[]
 }

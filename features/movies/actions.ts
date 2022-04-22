@@ -1,23 +1,31 @@
 import * as types from './types';
+import {MovieItem} from "./types";
 
-const getGifs = (searchText: string): types.GifsActionTypes => {
+const getMovies = (searchText: string): types.MoviesActionTypes => {
     return {
-        type: types.GET_GIFS,
+        type: types.GET_MOVIES,
         payload: searchText,
     };
 };
 
-const getGifsSuccess = (data: string[], offset:number): types.GifsActionTypes => {
+const getMoviesSuccess = (data: MovieItem[]): types.MoviesActionTypes => {
     return {
-        type: types.GET_GIFS_SUCCESS,
+        type: types.GET_MOVIES_SUCCESS,
         payload: {
             data,
-            offset
+        },
+    };
+};
+const getMovieError = (error: string): types.MoviesActionTypes => {
+    return {
+        type: types.GET_MOVIES_FAILURE,
+        payload: {
+            error,
         },
     };
 };
 
 export {
-    getGifs,
-    getGifsSuccess
+    getMovies,
+    getMoviesSuccess
 };

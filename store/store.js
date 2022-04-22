@@ -1,11 +1,27 @@
 import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import {reducer} from '../features/root-reducer';
-import {handler as gifsSaga} from '../features/gifs/sagas';
+import {handler as moviesSaga} from '../features/movies/sagas';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { persistStore, persistReducer } from 'redux-persist'
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+const persistConfig = {
+    key: 'root',
+    storage: AsyncStorage,
+    blacklist: ['movies']
+}
 
-sagaMiddleware.run(gifsSaga);
+const persistedReducer = persistReducer(persistConfig, reducer)
 
-export {store};
+const store = createStore(persistedReducer, applyMiddleware(sagaMiddleware));
+const persistor = persistStore(store, null, () => {
+    // console.log('state', store.getState());
+});
+const configureStore = () => {
+    return {persistor, store};
+};
+
+sagaMiddleware.run(moviesSaga);
+
+export default configureStore;
